@@ -1,0 +1,58 @@
+# Root-level project ignore rules
+
+# IDE and editor files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+.DS_Store
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.pid
+*.seed
+*.bak
+
+# Backend - Maven / Spring Boot generated artifacts
+backend/target/
+backend/.idea/
+backend/.settings/
+backend/*.iml
+backend/generated-sources/
+backend/generated-test-sources/
+backend/maven-status/
+backend/surefire-reports/
+backend/test-classes/
+backend/classes/
+
+# Frontend - Flutter / Dart generated artifacts
+frontend/build/
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/.pub-cache/
+frontend/.pub/
+frontend/coverage/
+frontend/.metadata
+frontend/.fvm/
+frontend/android/local.properties
+frontend/windows/flutter/ephemeral/
+frontend/macos/Flutter/GeneratedPluginRegistrant.swift
+frontend/windows/flutter/generated_plugin_registrant.cc
+frontend/linux/flutter/generated_plugin_registrant.cc
+frontend/android/app/debug
+frontend/android/app/profile
+frontend/android/app/release
+
+# OS-specific files
+Thumbs.db
+
+# Environment and local configuration
+.env
+.env.*
+local.properties
