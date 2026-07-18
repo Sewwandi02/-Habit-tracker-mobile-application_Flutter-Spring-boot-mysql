@@ -68,6 +68,25 @@ public class HabitControllerTest {
     }
 
     @Test
+    public void testCreateHabitWithFlutterPayloadShapePersistsToDatabase() throws Exception {
+        String requestBody = "{\"id\":\"1752770297000\",\"title\":\"Drink Water\",\"description\":\"Stay hydrated\",\"category\":\"Wellness\",\"dailyTarget\":3,\"createdAt\":\"2026-07-17T17:51:18.071Z\",\"completionDates\":[],\"dailyProgress\":{},\"color\":\"emerald\",\"icon\":\"track_changes\"}";
+
+        mockMvc.perform(post("/api/habits")
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isCreated());
+
+        assertEquals(1, habitRepository.count());
+        Habit createdHabit = habitRepository.findAll().get(0);
+        assertEquals("Drink Water", createdHabit.getTitle());
+        assertEquals("Stay hydrated", createdHabit.getDescription());
+        assertEquals("Wellness", createdHabit.getCategory());
+        assertEquals(3, createdHabit.getDailyTarget());
+        assertEquals(testUser.getId(), createdHabit.getUser().getId());
+    }
+
+    @Test
     public void testUpdateProgressAndCompletion() throws Exception {
         Habit habit = new Habit();
         habit.setId("test-habit");

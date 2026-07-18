@@ -6,7 +6,6 @@ import '../utils/constants.dart';
 import '../widgets/add_habit_dialog.dart';
 import '../widgets/habit_card.dart';
 import 'analytics_screen.dart';
-import 'auth_screen.dart';
 import 'habit_details_screen.dart';
 import 'landing_screen.dart';
 
@@ -297,9 +296,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           );
 
     if (habit == null) {
-      appState.addHabit(updatedHabit);
+      await appState.addHabit(updatedHabit);
     } else {
-      appState.updateHabit(updatedHabit);
+      await appState.updateHabit(updatedHabit);
     }
   }
 
