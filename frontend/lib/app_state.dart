@@ -53,24 +53,24 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addHabit(Habit habit) {
-    habitStore.addHabit(habit);
+  Future<void> addHabit(Habit habit) async {
+    await habitStore.addHabit(habit);
   }
 
-  void updateHabit(Habit habit) {
-    habitStore.updateHabit(habit);
+  Future<void> updateHabit(Habit habit) async {
+    await habitStore.updateHabit(habit);
   }
 
-  void deleteHabit(String habitId) {
-    habitStore.deleteHabit(habitId);
+  Future<void> deleteHabit(String habitId) async {
+    await habitStore.deleteHabit(habitId);
   }
 
-  void toggleTodayCompletion(String habitId) {
-    habitStore.toggleTodayCompletion(habitId);
+  Future<void> toggleTodayCompletion(String habitId) async {
+    await habitStore.toggleTodayCompletion(habitId);
   }
 
-  void updateProgress(String habitId, DateTime date, int progress) {
-    habitStore.updateProgress(habitId, date, progress);
+  Future<void> updateProgress(String habitId, DateTime date, int progress) async {
+    await habitStore.updateProgress(habitId, date, progress);
   }
 
   void _handleStoreChanged() {

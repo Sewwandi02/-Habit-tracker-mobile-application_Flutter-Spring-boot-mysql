@@ -1,9 +1,11 @@
 package com.example.habit.controller;
 
+import com.example.habit.dto.HabitCreateRequest;
 import com.example.habit.entity.Habit;
 import com.example.habit.entity.User;
 import com.example.habit.repository.HabitRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,18 +35,21 @@ public class HabitController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> createHabit(@RequestBody Habit habitRequest, HttpServletRequest request) {
+    public ResponseEntity<?> createHabit(@Valid @RequestBody HabitCreateRequest habitRequest, HttpServletRequest request) {
         User currentUser = (User) request.getAttribute("currentUser");
 
-        if (habitRequest.getId() == null || habitRequest.getId().trim().isEmpty()) {
-            habitRequest.setId(String.valueOf(System.currentTimeMillis()));
-        }
-        if (habitRequest.getCreatedAt() == null) {
-            habitRequest.setCreatedAt(Instant.now());
-        }
-        habitRequest.setUser(currentUser);
+        Habit habit = new Habit();
+        habit.setId(String.valueOf(System.currentTimeMillis()));
+        habit.setTitle(habitRequest.title());
+        habit.setDescription(habitRequest.description() == null ? "" : habitRequest.description());
+        habit.setCategory(habitRequest.category() == null ? "General" : habitRequest.category());
+        habit.setDailyTarget(habitRequest.dailyTarget() == null ? 1 : habitRequest.dailyTarget());
+        habit.setCreatedAt(Instant.now());
+        habit.setColor(habitRequest.color() == null ? "emerald" : habitRequest.color());
+        habit.setIcon(habitRequest.icon() == null ? "track_changes" : habitRequest.icon());
+        habit.setUser(currentUser);
 
-        Habit savedHabit = habitRepository.saveAndFlush(habitRequest);
+        Habit savedHabit = habitRepository.saveAndFlush(habit);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedHabit);
     }
 

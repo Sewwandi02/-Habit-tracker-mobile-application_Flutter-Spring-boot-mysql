@@ -54,6 +54,10 @@ class HabitStore extends ChangeNotifier {
         final returnedHabit = Habit.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
         _habits = _habits.map((h) => h.id == habit.id ? returnedHabit : h).toList();
         notifyListeners();
+      } else {
+        debugPrint('Error adding habit: ${response.statusCode} ${response.body}');
+        _habits = _habits.where((h) => h.id != habit.id).toList();
+        notifyListeners();
       }
     } catch (e) {
       debugPrint('Error adding habit: $e');
@@ -79,6 +83,10 @@ class HabitStore extends ChangeNotifier {
         final returnedHabit = Habit.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
         _habits = _habits.map((h) => h.id == updatedHabit.id ? returnedHabit : h).toList();
         notifyListeners();
+      } else {
+        debugPrint('Error updating habit: ${response.statusCode} ${response.body}');
+        _habits = _habits.map((h) => h.id == updatedHabit.id ? original : h).toList();
+        notifyListeners();
       }
     } catch (e) {
       debugPrint('Error updating habit: $e');
@@ -99,6 +107,7 @@ class HabitStore extends ChangeNotifier {
     try {
       final response = await ApiClient.instance.delete('/api/habits/$habitId');
       if (response.statusCode != 204 && response.statusCode != 200) {
+        debugPrint('Error deleting habit: ${response.statusCode} ${response.body}');
         // Rollback
         _habits = <Habit>[original, ..._habits];
         notifyListeners();
@@ -125,6 +134,11 @@ class HabitStore extends ChangeNotifier {
       if (response.statusCode == 200) {
         final returnedHabit = Habit.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
         _habits = _habits.map((h) => h.id == habitId ? returnedHabit : h).toList();
+        notifyListeners();
+      } else {
+        debugPrint('Error toggling habit completion: ${response.statusCode} ${response.body}');
+        // Rollback
+        _habits = _habits.map((h) => h.id == habitId ? habit : h).toList();
         notifyListeners();
       }
     } catch (e) {
@@ -174,6 +188,7 @@ class HabitStore extends ChangeNotifier {
         _habits = _habits.map((h) => h.id == habitId ? returnedHabit : h).toList();
         notifyListeners();
       } else {
+        debugPrint('Error updating habit progress: ${response.statusCode} ${response.body}');
         // Rollback
         _habits = _habits.map((h) => h.id == habitId ? habit : h).toList();
         notifyListeners();
